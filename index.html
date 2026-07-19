@@ -1,209 +1,130 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#6f8160" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="京都親子旅" />
-  <meta name="description" content="2026 京都親子自由行手機版行前手冊" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="assets/icon-192.png" />
-  <link rel="icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <title>京都親子旅行｜2026</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#315f52">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="京都家庭旅行">
+  <meta name="description" content="2026 京都・奈良・大阪親子旅行 PWA">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>京都家庭旅行 2026</title>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="hero" id="top">
-      <div class="hero-art" aria-hidden="true">
-        <span class="sun"></span>
-        <span class="mountain m1"></span>
-        <span class="mountain m2"></span>
-        <span class="torii">⛩</span>
-        <span class="leaf l1">🍃</span><span class="leaf l2">🍃</span>
+<div class="app-shell">
+  <header class="hero" id="home">
+    <div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div>
+    <div class="topbar"><div class="brand-dot">旅</div><div><small>LIAO FAMILY</small><strong>KYOTO 2026</strong></div><button id="themeBtn" class="icon-btn" aria-label="切換深色模式">☾</button></div>
+    <p class="eyebrow">KYOTO · UJI · NARA · OSAKA</p>
+    <h1>我們家的<br>關西小旅行</h1>
+    <p class="hero-sub">2026.07.25 — 07.29｜親子舒適版</p>
+    <div class="hero-stats glass">
+      <div><small>出發倒數</small><b id="countdown">—</b></div>
+      <div><small>旅行天數</small><b>5 天 4 夜</b></div>
+      <div><small>旅行風格</small><b>慢慢玩</b></div>
+    </div>
+    <div class="today-card glass">
+      <div><span class="mini-label">TODAY'S GUIDE</span><h2 id="todayTitle">先把重要的事準備好</h2><p id="todayText">行前任務、票券與親子用品都集中在 7/24 準備日。</p></div>
+      <button class="primary-btn" data-go="prepare">開始查看</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="view active" id="view-home">
+      <div class="section-head"><div><span class="kicker">TRIP OVERVIEW</span><h2>旅程一覽</h2></div></div>
+      <div class="overview-scroll" id="overviewCards"></div>
+      <div class="section-head compact"><div><span class="kicker">QUICK ACCESS</span><h2>快速入口</h2></div></div>
+      <div class="quick-grid">
+        <button class="quick-card" data-go="itinerary"><span>🗓️</span><b>每日行程</b><small>景點、交通與備案</small></button>
+        <button class="quick-card" data-go="food"><span>🍜</span><b>餐廳候選</b><small>當下再決定吃什麼</small></button>
+        <button class="quick-card" data-go="shopping"><span>🛍️</span><b>購物清單</b><small>3COINS 與百貨</small></button>
+        <button class="quick-card danger-soft" data-go="emergency"><span>🆘</span><b>緊急資訊</b><small>電話、醫療與飯店</small></button>
       </div>
-      <div class="top-actions">
-        <button class="icon-btn" id="themeBtn" aria-label="切換深色模式">☾</button>
-        <button class="icon-btn" id="installBtn" hidden aria-label="安裝 App">＋</button>
+      <article class="tip-card"><span>🌿</span><div><b>這趟的原則</b><p>不追求景點全制霸。每天保留休息與購物彈性，孩子累了就縮短行程。</p></div></article>
+    </section>
+
+    <section class="view" id="view-prepare">
+      <div class="page-hero prepare-hero"><span>7/24 · PREP DAY</span><h2>明天要出發了！</h2><p>把前置作業留在今天，正式旅行頁面只放行程。</p></div>
+      <div class="progress-card"><div><small>準備完成度</small><b id="prepPercent">0%</b></div><div class="progress"><span id="prepBar"></span></div><p id="prepRemain">尚未開始</p></div>
+      <div id="prepGroups"></div>
+    </section>
+
+    <section class="view" id="view-itinerary">
+      <div class="section-head sticky-head"><div><span class="kicker">DAILY PLAN</span><h2>每日行程</h2></div></div>
+      <div class="day-tabs" id="dayTabs"></div>
+      <div id="dayContent"></div>
+    </section>
+
+    <section class="view" id="view-food">
+      <div class="page-hero food-hero"><span>FOOD POOL</span><h2>今天想吃什麼？</h2><p>先收藏候選，現場依距離、排隊與孩子狀況決定。</p></div>
+      <div class="filter-row" id="foodFilters"></div>
+      <div id="foodList" class="card-list"></div>
+    </section>
+
+    <section class="view" id="view-shopping">
+      <div class="page-hero shop-hero"><span>SHOPPING</span><h2>購物行程</h2><p>正式行程只留真正順路、最值得逛的點。</p></div>
+      <article class="featured-shop">
+        <div class="featured-badge">本次唯一必排 3COINS</div>
+        <div class="shop-icon">3</div>
+        <div><h3>3COINS +plus 河原町 OPA 店</h3><p>安排在 Day 1 錦市場、新京極之後，接著步行到京都高島屋 S.C.，不需要額外搭車。</p><div class="tags"><span>生活雜貨</span><span>收納</span><span>兒童用品</span><span>旅行小物</span></div><a class="map-btn" target="_blank" href="https://www.google.com/maps/search/?api=1&query=3COINS%20%2Bplus%20%E6%B2%B3%E5%8E%9F%E7%94%BAOPA%E5%BA%97">導航店舖</a></div>
+      </article>
+      <div class="section-head compact"><div><span class="kicker">MUST SHOP</span><h2>正式購物行程</h2></div></div>
+      <div id="mainShopping" class="card-list"></div>
+      <details class="optional-box"><summary>如果還有體力：補充購物點</summary><div id="optionalShopping" class="mini-list"></div></details>
+    </section>
+
+    <section class="view" id="view-more">
+      <div class="page-hero more-hero"><span>TRAVEL TOOLS</span><h2>更多工具</h2><p>固定資料與實用功能集中在這裡，不混入每日行程。</p></div>
+      <div class="more-grid">
+        <button class="more-card" data-go="emergency"><span>🆘</span><b>緊急資訊</b><small>電話、醫院、藥局</small></button>
+        <button class="more-card" data-go="info"><span>✈️</span><b>旅行資訊</b><small>航班與飯店</small></button>
+        <button class="more-card" data-go="budget"><span>💴</span><b>旅費記帳</b><small>本機儲存</small></button>
+        <button class="more-card" data-go="phrases"><span>🗣️</span><b>常用日文</b><small>點一下複製</small></button>
       </div>
-      <p class="eyebrow">FAMILY TRIP · KYOTO & OSAKA</p>
-      <h1>京都親子旅行</h1>
-      <p class="date">2026.07.25 — 07.29</p>
-      <div class="trip-chips">
-        <span>✈️ BR178 / BR177</span><span>🏨 四條烏丸</span><span>🎢 USJ</span>
-      </div>
-      <div class="hero-card glass">
-        <div>
-          <small>旅程倒數</small>
-          <strong id="countdown">—</strong>
-        </div>
-        <div>
-          <small>同行</small>
-          <strong>親子旅行</strong>
-        </div>
-        <div>
-          <small>住宿</small>
-          <strong>4 晚</strong>
-        </div>
-      </div>
-    </header>
+    </section>
 
-    <nav class="day-tabs" id="dayTabs" aria-label="每日行程">
-      <button class="day-tab active" data-day="1"><small>7/25</small><b>D1</b></button>
-      <button class="day-tab" data-day="2"><small>7/26</small><b>D2</b></button>
-      <button class="day-tab" data-day="3"><small>7/27</small><b>D3</b></button>
-      <button class="day-tab" data-day="4"><small>7/28</small><b>D4</b></button>
-      <button class="day-tab" data-day="5"><small>7/29</small><b>D5</b></button>
-    </nav>
+    <section class="view" id="view-emergency">
+      <div class="page-hero emergency-hero"><span>SOS</span><h2>緊急資訊</h2><p>需要時直接打開，不必在行程裡翻找。</p></div>
+      <div class="sos-grid"><a href="tel:119" class="sos-card red"><span>🚑</span><b>119</b><small>消防／救護車</small></a><a href="tel:110" class="sos-card blue"><span>🚓</span><b>110</b><small>警察</small></a></div>
+      <div class="info-card"><h3>附近醫療</h3><a class="wide-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=pediatric%20clinic%20near%20me">搜尋附近小兒科</a><a class="wide-link secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=hospital%20near%20me">搜尋附近醫院</a><a class="wide-link secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=pharmacy%20near%20me">搜尋附近藥局</a></div>
+      <div class="info-card"><h3>緊急日文</h3><button class="phrase" data-copy="子供が熱を出しました。">小孩發燒了<small>子供が熱を出しました。</small></button><button class="phrase" data-copy="子供のお腹が痛いです。">小孩肚子痛<small>子供のお腹が痛いです。</small></button><button class="phrase" data-copy="救急車を呼んでください。">請幫我叫救護車<small>救急車を呼んでください。</small></button><button class="phrase" data-copy="英語か中国語を話せる方はいますか？">有人會英文或中文嗎？<small>英語か中国語を話せる方はいますか？</small></button></div>
+      <div class="info-card"><h3>住宿快速導航</h3><a class="wide-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Daiwa%20Roynet%20Hotel%20Kyoto%20Shijo%20Karasuma">京都飯店</a><a class="wide-link secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Odysis%20Suites%20Osaka%20Airport%20Hotel">機場飯店</a></div>
+    </section>
 
-    <main>
-      <section class="day-panel active" data-panel="1">
-        <div class="section-heading">
-          <div><span class="kicker">DAY 1</span><h2>抵達京都・祇園散步</h2></div>
-          <span class="mood">輕鬆開場 🌿</span>
-        </div>
-        <div class="summary-grid">
-          <div class="summary-card"><span>✈️</span><small>抵達</small><b>10:10 KIX</b></div>
-          <div class="summary-card"><span>🚶</span><small>步行</small><b>約 8,000 步</b></div>
-          <div class="summary-card"><span>💴</span><small>預算</small><b>¥8,000</b></div>
-        </div>
-        <article class="alert warm"><b>第一天策略</b><p>入境後不塞滿景點，先入住、吃飯，再用散步認識京都。孩子累了可隨時搭計程車回飯店。</p></article>
-        <div class="timeline">
-          <div class="stop"><time>10:10</time><div class="dot">✈️</div><div class="stop-card"><h3>抵達關西機場</h3><p>入境、領行李、購買或加值 ICOCA。預留 60–90 分鐘。</p><a class="map-btn" href="https://maps.google.com/?q=Kansai+International+Airport" target="_blank">開啟地圖</a></div></div>
-          <div class="stop"><time>11:40</time><div class="dot">🚆</div><div class="stop-card"><h3>搭 HARUKA 前往京都</h3><p>KIX → 京都站約 80 分鐘。建議先買好指定席，孩子比較舒服。</p></div></div>
-          <div class="stop"><time>13:30</time><div class="dot">🏨</div><div class="stop-card"><h3>京都四條烏丸飯店</h3><p>寄放行李／辦理入住。稍作休息後再出發。</p><a class="map-btn" href="https://maps.google.com/?q=Daiwa+Roynet+Hotel+Kyoto+Shijo+Karasuma" target="_blank">導航飯店</a></div></div>
-          <div class="stop"><time>15:00</time><div class="dot">🛍️</div><div class="stop-card"><h3>錦市場 × 新京極</h3><p>邊走邊吃、逛藥妝與伴手禮。錦市場多數店家傍晚陸續收店，先逛這裡。</p><div class="tags"><span>玉子燒</span><span>豆乳甜甜圈</span><span>抹茶點心</span></div><a class="map-btn" href="https://maps.google.com/?q=Nishiki+Market+Kyoto" target="_blank">導航錦市場</a></div></div>
-          <div class="stop"><time>17:30</time><div class="dot">⛩️</div><div class="stop-card"><h3>八坂神社・花見小路</h3><p>傍晚光線柔和，從八坂神社一路散步到祇園白川。</p><a class="map-btn" href="https://maps.google.com/?q=Yasaka+Shrine+Kyoto" target="_blank">導航八坂神社</a></div></div>
-          <div class="stop"><time>19:00</time><div class="dot">🍜</div><div class="stop-card"><h3>晚餐：河原町周邊</h3><p>以不排太久為原則。建議燒肉、烏龍麵、親子丼擇一，吃完回飯店休息。</p></div></div>
-        </div>
-      </section>
+    <section class="view" id="view-info">
+      <div class="page-hero info-hero"><span>TRIP INFO</span><h2>旅行資訊</h2><p>航班、住宿與重要票券提醒。</p></div>
+      <div class="info-card"><h3>✈️ 去程</h3><p><b>長榮 BR178</b><br>7/25 06:30 出發 → 10:10 抵達關西機場</p></div>
+      <div class="info-card"><h3>✈️ 回程</h3><p><b>長榮 BR177</b><br>7/29 11:10 關西機場起飛</p></div>
+      <div class="info-card"><h3>🏨 住宿</h3><p><b>7/25–7/28</b><br>Daiwa Roynet Hotel Kyoto Shijo Karasuma</p><p><b>7/28–7/29</b><br>Odysis Suites Osaka Airport Hotel</p></div>
+      <div class="info-card"><h3>🎢 USJ 快速通關</h3><ul><li>17:10–18:10 超級任天堂世界保證入場</li><li>17:10–17:40 瑪利歐賽車</li><li>17:40–18:10 咚奇剛瘋狂礦車</li><li>JAWS 無指定時間，當日彈性使用</li></ul></div>
+    </section>
 
-      <section class="day-panel" data-panel="2">
-        <div class="section-heading"><div><span class="kicker">DAY 2</span><h2>宇治抹茶 × 奈良小鹿</h2></div><span class="mood">親子人氣日 🦌</span></div>
-        <div class="summary-grid"><div class="summary-card"><span>🍵</span><small>主題</small><b>抹茶巡禮</b></div><div class="summary-card"><span>🦌</span><small>亮點</small><b>奈良餵鹿</b></div><div class="summary-card"><span>🚆</span><small>移動</small><b>JR 奈良線</b></div></div>
-        <article class="alert"><b>親子提醒</b><p>鹿仙貝要分次拿，不要讓孩子一次拿整疊；鹿靠太近時雙手攤開表示「沒有了」。</p></article>
-        <div class="timeline">
-          <div class="stop"><time>08:00</time><div class="dot">🚆</div><div class="stop-card"><h3>京都 → 宇治</h3><p>搭 JR 奈良線，約 20–30 分鐘。建議 08:00 左右出門。</p></div></div>
-          <div class="stop"><time>09:00</time><div class="dot">🍵</div><div class="stop-card"><h3>宇治表參道</h3><p>先吃抹茶甜點，再前往平等院，避開中午人潮。</p><div class="tags"><span>生茶果凍</span><span>抹茶冰</span><span>抹茶蕎麥麵</span></div><a class="map-btn" href="https://maps.google.com/?q=Byodoin+Omotesando+Uji" target="_blank">導航表參道</a></div></div>
-          <div class="stop"><time>10:30</time><div class="dot">🏯</div><div class="stop-card"><h3>平等院・宇治川</h3><p>停留約 60–90 分鐘。鳳凰堂倒影是經典拍照位置。</p><a class="map-btn" href="https://maps.google.com/?q=Byodoin+Temple" target="_blank">導航平等院</a></div></div>
-          <div class="stop"><time>12:30</time><div class="dot">🚆</div><div class="stop-card"><h3>宇治 → 奈良</h3><p>搭 JR 前往奈良。抵達後先午餐，再往公園移動。</p></div></div>
-          <div class="stop"><time>14:00</time><div class="dot">🦌</div><div class="stop-card"><h3>奈良公園</h3><p>餵鹿、散步、拍照。孩子若怕鹿，可先在外圍觀察。</p><a class="map-btn" href="https://maps.google.com/?q=Nara+Park" target="_blank">導航奈良公園</a></div></div>
-          <div class="stop"><time>15:30</time><div class="dot">🙏</div><div class="stop-card"><h3>東大寺</h3><p>看大佛殿，停留約 60 分鐘。天氣太熱時可縮短戶外時間。</p><a class="map-btn" href="https://maps.google.com/?q=Todai-ji" target="_blank">導航東大寺</a></div></div>
-          <div class="stop"><time>18:30</time><div class="dot">🌙</div><div class="stop-card"><h3>返回京都</h3><p>晚上可在京都站或四條烏丸簡單用餐。</p></div></div>
-        </div>
-      </section>
+    <section class="view" id="view-budget">
+      <div class="page-hero budget-hero"><span>EXPENSE</span><h2>旅費記帳</h2><p>資料只儲存在這台裝置。</p></div>
+      <div class="budget-total"><small>目前總計</small><strong>¥<span id="budgetTotal">0</span></strong></div>
+      <form id="budgetForm" class="budget-form"><input id="budgetItem" placeholder="項目，例如晚餐" required><input id="budgetAmount" type="number" min="0" placeholder="日圓金額" required><select id="budgetCategory"><option>餐費</option><option>交通</option><option>購物</option><option>門票</option><option>其他</option></select><button class="primary-btn">加入</button></form>
+      <div id="budgetList" class="budget-list"></div>
+    </section>
 
-      <section class="day-panel" data-panel="3">
-        <div class="section-heading"><div><span class="kicker">DAY 3</span><h2>清水寺早晨 × 京都親子午後</h2></div><span class="mood">經典京都 📷</span></div>
-        <div class="summary-grid"><div class="summary-card"><span>🌅</span><small>出發</small><b>07:00</b></div><div class="summary-card"><span>📷</span><small>拍照</small><b>二三年坂</b></div><div class="summary-card"><span>🐧</span><small>午後</small><b>水族館可選</b></div></div>
-        <article class="alert warm"><b>避暑重點</b><p>清水寺與二三年坂務必早去。中午後改排室內景點，降低孩子中暑與情緒疲勞。</p></article>
-        <div class="timeline">
-          <div class="stop"><time>07:00</time><div class="dot">🚕</div><div class="stop-card"><h3>飯店出發</h3><p>建議搭計程車到清水寺附近，省體力也避開塞車尖峰。</p></div></div>
-          <div class="stop"><time>07:30</time><div class="dot">🏯</div><div class="stop-card"><h3>清水寺</h3><p>清晨人潮較少，停留約 75–90 分鐘。</p><a class="map-btn" href="https://maps.google.com/?q=Kiyomizu-dera" target="_blank">導航清水寺</a></div></div>
-          <div class="stop"><time>09:00</time><div class="dot">📷</div><div class="stop-card"><h3>三年坂・二年坂・八坂塔</h3><p>一路慢走拍照，沿途找早餐或甜點休息。</p><a class="map-btn" href="https://maps.google.com/?q=Sannenzaka+Kyoto" target="_blank">導航三年坂</a></div></div>
-          <div class="stop"><time>11:00</time><div class="dot">⛩️</div><div class="stop-card"><h3>高台寺／祇園午餐</h3><p>視體力決定是否進高台寺；也可直接前往室內午餐。</p></div></div>
-          <div class="stop"><time>14:00</time><div class="dot">🐧</div><div class="stop-card"><h3>午後二選一</h3><p><b>A 京都水族館：</b>較輕鬆、適合怕熱。<br><b>B 京都鐵道博物館：</b>適合喜歡火車的小朋友。</p><div class="button-row"><a class="map-btn" href="https://maps.google.com/?q=Kyoto+Aquarium" target="_blank">水族館</a><a class="map-btn secondary" href="https://maps.google.com/?q=Kyoto+Railway+Museum" target="_blank">鐵道博物館</a></div></div></div>
-          <div class="stop"><time>18:00</time><div class="dot">🧳</div><div class="stop-card"><h3>整理行李・確認宅配</h3><p>將大行李寄往 Odysis Suites 或確認隔日寄放方案。USJ 當天只帶隨身包。</p></div></div>
-        </div>
-      </section>
+    <section class="view" id="view-phrases">
+      <div class="page-hero phrase-hero"><span>JAPANESE</span><h2>常用日文</h2><p>點擊句子即可複製並放大給店員看。</p></div>
+      <div class="info-card" id="phraseList"></div>
+    </section>
+  </main>
 
-      <section class="day-panel" data-panel="4">
-        <div class="section-heading"><div><span class="kicker">DAY 4</span><h2>USJ 任務日・夜宿機場飯店</h2></div><span class="mood">全力玩一天 🎮</span></div>
-        <div class="summary-grid"><div class="summary-card"><span>⏰</span><small>抵達園區</small><b>07:45</b></div><div class="summary-card"><span>🎟️</span><small>必帶</small><b>門票＋快通</b></div><div class="summary-card"><span>🏨</span><small>晚間</small><b>泉佐野</b></div></div>
-        <article class="alert danger"><b>重要</b><p>入園券與快速通關是分開的。出發前再次截圖保存 QR Code、指定入場時段與設施時段。</p></article>
-        <div class="mission-card">
-          <div class="mission-head"><div><span class="kicker">USJ QUEST</span><h3>今日任務</h3></div><strong id="missionProgress">0%</strong></div>
-          <div class="progress"><span id="missionBar"></span></div>
-          <label><input type="checkbox" class="mission" data-key="dk"> 咚奇剛瘋狂礦車</label>
-          <label><input type="checkbox" class="mission" data-key="mario"> 瑪利歐賽車</label>
-          <label><input type="checkbox" class="mission" data-key="yoshi"> 耀西冒險</label>
-          <label><input type="checkbox" class="mission" data-key="jaws"> 大白鯊</label>
-          <label><input type="checkbox" class="mission" data-key="hp"> 哈利波特園區</label>
-        </div>
-        <div class="timeline">
-          <div class="stop"><time>06:20</time><div class="dot">🚆</div><div class="stop-card"><h3>京都出發</h3><p>路線可依當日即時導航選擇京都站 → 大阪 → 西九條 → 環球城。</p><a class="map-btn" href="https://maps.google.com/?q=Universal+Studios+Japan" target="_blank">導航 USJ</a></div></div>
-          <div class="stop"><time>07:45</time><div class="dot">🌍</div><div class="stop-card"><h3>抵達園區・準備入場</h3><p>先整理 QR Code、上洗手間、補水。園區可能提早開門。</p></div></div>
-          <div class="stop"><time>入園後</time><div class="dot">🎮</div><div class="stop-card"><h3>先確認任天堂園區時段</h3><p>依快速通關指定時間倒推動線；不要為了排一般設施錯過指定時段。</p></div></div>
-          <div class="stop"><time>午餐</time><div class="dot">🍄</div><div class="stop-card"><h3>提早吃飯</h3><p>建議 11:00 前或 14:00 後用餐，避開尖峰。孩子累時安排室內餐廳休息。</p></div></div>
-          <div class="stop"><time>18:00</time><div class="dot">🚆</div><div class="stop-card"><h3>前往機場飯店</h3><p>視孩子體力可彈性延後。由環球城前往臨空城／泉佐野，入住 Odysis Suites。</p><a class="map-btn" href="https://maps.google.com/?q=Odysis+Suites+Osaka+Airport+Hotel" target="_blank">導航飯店</a></div></div>
-        </div>
-      </section>
-
-      <section class="day-panel" data-panel="5">
-        <div class="section-heading"><div><span class="kicker">DAY 5</span><h2>早安機場・平安回台</h2></div><span class="mood">輕鬆收尾 ✈️</span></div>
-        <div class="summary-grid"><div class="summary-card"><span>✈️</span><small>航班</small><b>BR177</b></div><div class="summary-card"><span>🕚</span><small>起飛</small><b>11:10</b></div><div class="summary-card"><span>🧳</span><small>建議到機場</small><b>08:30–09:00</b></div></div>
-        <div class="timeline">
-          <div class="stop"><time>07:00</time><div class="dot">☀️</div><div class="stop-card"><h3>起床・早餐・最後整理</h3><p>確認護照、錢包、手機、充電器、退稅品與伴手禮。</p></div></div>
-          <div class="stop"><time>08:15</time><div class="dot">🏨</div><div class="stop-card"><h3>退房前往 KIX</h3><p>預留接駁、車程與航廈移動時間。</p></div></div>
-          <div class="stop"><time>09:00</time><div class="dot">🛫</div><div class="stop-card"><h3>報到・托運・安檢</h3><p>完成後再採買最後伴手禮。液體與免稅品留意登機規範。</p></div></div>
-          <div class="stop"><time>11:10</time><div class="dot">🇹🇼</div><div class="stop-card"><h3>BR177 返回台灣</h3><p>旅程完成。一路平安回家！</p></div></div>
-        </div>
-      </section>
-
-      <section class="utility-section" id="tools">
-        <div class="section-heading"><div><span class="kicker">TRAVEL TOOLS</span><h2>旅行小工具</h2></div></div>
-        <div class="tool-grid">
-          <article class="tool-card budget-card">
-            <h3>💴 旅費記帳</h3>
-            <div class="budget-total"><small>目前合計</small><strong>¥<span id="budgetTotal">0</span></strong></div>
-            <form id="budgetForm">
-              <input id="budgetItem" placeholder="例如：午餐" required />
-              <input id="budgetAmount" type="number" min="0" placeholder="金額" required />
-              <select id="budgetCategory"><option>餐費</option><option>交通</option><option>購物</option><option>門票</option><option>其他</option></select>
-              <button>加入</button>
-            </form>
-            <div id="budgetList" class="budget-list"></div>
-          </article>
-
-          <article class="tool-card checklist-card">
-            <h3>🧳 出發前 Checklist</h3>
-            <label><input type="checkbox" class="persist-check" data-key="passport"> 護照與影本</label>
-            <label><input type="checkbox" class="persist-check" data-key="ticket"> 電子機票／飯店憑證</label>
-            <label><input type="checkbox" class="persist-check" data-key="usjqr"> USJ 門票與快通 QR Code</label>
-            <label><input type="checkbox" class="persist-check" data-key="esim"> eSIM／網路</label>
-            <label><input type="checkbox" class="persist-check" data-key="medicine"> 兒童常備藥與體溫計</label>
-            <label><input type="checkbox" class="persist-check" data-key="summer"> 防曬、小風扇、冰毛巾</label>
-          </article>
-
-          <article class="tool-card phrase-card">
-            <h3>🗣️ 一鍵日本語</h3>
-            <button class="phrase" data-text="店内で食べます。">我要內用<small>店内で食べます。</small></button>
-            <button class="phrase" data-text="子供用の食器をお願いします。">請給我兒童餐具<small>子供用の食器をお願いします。</small></button>
-            <button class="phrase" data-text="袋はいりません。">不需要袋子<small>袋はいりません。</small></button>
-            <button class="phrase" data-text="トイレはどこですか？">請問洗手間在哪裡？<small>トイレはどこですか？</small></button>
-            <p class="copy-note" id="copyNote">點一下即可複製日文</p>
-          </article>
-
-          <article class="tool-card emergency-card">
-            <h3>🆘 緊急資訊</h3>
-            <p><b>日本緊急電話</b><br>警察 110｜消防／救護 119</p>
-            <a class="wide-link" href="https://maps.google.com/?q=hospital+near+me" target="_blank">搜尋附近醫院</a>
-            <a class="wide-link secondary" href="https://maps.google.com/?q=pharmacy+near+me" target="_blank">搜尋附近藥局</a>
-          </article>
-        </div>
-      </section>
-
-      <section class="utility-section">
-        <div class="section-heading"><div><span class="kicker">QUICK LINKS</span><h2>常用導航</h2></div></div>
-        <div class="quick-links">
-          <a href="https://maps.google.com/?q=Daiwa+Roynet+Hotel+Kyoto+Shijo+Karasuma" target="_blank"><span>🏨</span>京都飯店</a>
-          <a href="https://maps.google.com/?q=Kyoto+Station" target="_blank"><span>🚉</span>京都站</a>
-          <a href="https://maps.google.com/?q=Universal+Studios+Japan" target="_blank"><span>🎢</span>USJ</a>
-          <a href="https://maps.google.com/?q=Odysis+Suites+Osaka+Airport+Hotel" target="_blank"><span>🛏️</span>機場飯店</a>
-          <a href="https://maps.google.com/?q=Kansai+International+Airport" target="_blank"><span>✈️</span>關西機場</a>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <p>Have a lovely family trip in Kyoto ♡</p>
-      <small>行程時間可依天候、交通與孩子體力彈性調整。</small>
-      <a href="#top">回到頂端 ↑</a>
-    </footer>
-  </div>
-  <div class="toast" id="toast">已複製</div>
-  <script src="app.js"></script>
+  <nav class="bottom-nav" aria-label="主要導覽">
+    <button class="nav-item active" data-go="home"><span>⌂</span><small>首頁</small></button>
+    <button class="nav-item" data-go="itinerary"><span>▦</span><small>行程</small></button>
+    <button class="nav-item" data-go="shopping"><span>◈</span><small>購物</small></button>
+    <button class="nav-item" data-go="food"><span>♨</span><small>美食</small></button>
+    <button class="nav-item" data-go="more"><span>•••</span><small>更多</small></button>
+  </nav>
+</div>
+<div class="toast" id="toast">已完成</div>
+<script src="app.js"></script>
 </body>
 </html>
